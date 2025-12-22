@@ -16,8 +16,8 @@
 #define TAG "SEN5X_MAIN"
 #define SENSOR_POLL_DELAY_MS 10000  // 10 seconds
 
-#define WIFI_SSID       "Sample1"
-#define WIFI_PASS       "."
+#define WIFI_SSID "your ssid"
+#define WIFI_PASS "your password"
 
 #define WIFI_CONNECTED_BIT BIT0
 static EventGroupHandle_t wifi_event_group;
@@ -123,7 +123,7 @@ void wifi_init(void) {
 
 // Initialize MQTT
 void mqtt_init(void) {
-    const esp_mqtt_client_config_t cfg = { .broker.address.uri = "mqtt://192.168.1.62" };
+    const esp_mqtt_client_config_t cfg = { .broker.address.uri = "mqtt://broker.hivemq.com:1883" };
     mqtt_client = esp_mqtt_client_init(&cfg);
     esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(mqtt_client);
@@ -175,7 +175,7 @@ void app_main(void) {
                              "{\"pm1\":%.1f,\"pm2_5\":%.1f,\"pm4\":%.1f,\"pm10\":%.1f,"
                              "\"temp\":%.2f,\"rh\":%.2f,\"voc\":%.1f,\"nox\":%.1f,\"aqi\":%d}",
                              pm1, pm2_5, pm4, pm10, temp, rh, voc, nox, aqi);
-                    esp_mqtt_client_publish(mqtt_client, "sensor/aqi", payload, 0, 1, 0);
+                    esp_mqtt_client_publish(mqtt_client, "your topic", payload, 0, 1, 0);
                 }
             } else {
                 ESP_LOGE(TAG, "Failed to read sensor values");
